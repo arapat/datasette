@@ -231,6 +231,13 @@ def package(
 @cli.command()
 @click.argument("files", type=click.Path(exists=True), nargs=-1)
 @click.option(
+    "-d",
+    "--dir",
+    type=click.Path(exists=True),
+    help="Directories to scan for SQLite files to serve",
+    multiple=True,
+)
+@click.option(
     "-i",
     "--immutable",
     type=click.Path(exists=True),
@@ -308,6 +315,7 @@ def package(
 @click.option("--help-config", is_flag=True, help="Show available config options")
 def serve(
     files,
+    dir,
     immutable,
     host,
     port,
@@ -358,6 +366,7 @@ def serve(
     )
     ds = Datasette(
         files,
+        dir,
         immutables=immutable,
         cache_headers=not debug and not reload,
         cors=cors,
